@@ -4,6 +4,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "npm run build -w packages/core && npm run build -w packages/mcp && npm run build -w packages/cli",
+    "postinstall": "npm run build",
     "test": "npm run test -w packages/core && npm run test -w packages/mcp && npm run test -w packages/cli",
     "lint": "eslint packages/*/src/**/*.ts"
   },

@@ -19,14 +19,15 @@ Observe → Detect patterns → Suggest skills → Evaluate ROI → Evolve or re
 ## Installation
 
 ```bash
-npm install -g skillforge
-skillforge init
+npm install -g skillforge   # or: git clone + npm install + npm link -w packages/cli -w packages/mcp
+skillforge setup             # init DB, configure MCP, install hooks
 ```
 
-### Register MCP Server
+Done. Restart Claude Code.
 
-Add to `.claude/settings.json`:
+### Manual configuration (if setup doesn't work)
 
+Add to `~/.claude/.mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -38,51 +39,24 @@ Add to `.claude/settings.json`:
 }
 ```
 
-### Configure Hooks
-
-In `.claude/settings.json`:
-
+Add to `~/.claude/settings.json`:
 ```json
 {
   "hooks": {
-    "PostToolUse": [
-      {
-        "type": "command",
-        "command": "bash ~/.claude/hooks/skillforge-post-tool-use.sh"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "type": "command",
-        "command": "bash ~/.claude/hooks/skillforge-session-end.sh"
-      }
-    ],
-    "SessionStart": [
-      {
-        "type": "systemMessage",
-        "source": "~/.claude/hooks/skillforge-session-start.md"
-      }
-    ]
+    "SessionEnd": [{
+      "matcher": "",
+      "hooks": [{ "type": "command", "command": "skillforge analyze --since 1d --min-frequency 3 --min-sessions 2 && skillforge evaluate --all" }]
+    }]
   }
 }
-```
-
-Copy hook files:
-
-```bash
-mkdir -p ~/.claude/hooks
-cp hooks/post-tool-use.sh ~/.claude/hooks/skillforge-post-tool-use.sh
-cp hooks/session-end.sh ~/.claude/hooks/skillforge-session-end.sh
-cp hooks/session-start.md ~/.claude/hooks/skillforge-session-start.md
-chmod +x ~/.claude/hooks/skillforge-post-tool-use.sh
-chmod +x ~/.claude/hooks/skillforge-session-end.sh
 ```
 
 ## CLI Commands
 
 | Command | Description |
 |---------|-------------|
-| `skillforge init` | Initialize the database |
+| `skillforge setup` | One-command setup (DB + MCP + hooks) |
+| `skillforge init` | Initialize database only |
 | `skillforge analyze` | Detect repeated patterns |
 | `skillforge evaluate` | Evaluate skill ROI |
 | `skillforge list` | List patterns, suggestions, skills |
