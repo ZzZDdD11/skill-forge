@@ -1,0 +1,17 @@
+{
+  "name": "skillforge",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "skillforge": "./bin/skillforge"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@skillforge/core": "*",
+    "commander": "^12.0.0"
+  }
+}
