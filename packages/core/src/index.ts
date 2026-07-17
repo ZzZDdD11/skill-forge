@@ -1,4 +1,4 @@
-// autoskill-core — shared types, DB, algorithms
+// skillbot-core — shared types, DB, algorithms
 export * from './types.js';
 export * from './hash.js';
 export * from './normalize.js';

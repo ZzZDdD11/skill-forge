@@ -8,7 +8,7 @@ import { RawEvent, Pattern, Suggestion, Skill, RoiRecord } from './types.js';
 let db: Database.Database | null = null;
 
 export function getDbDir(): string {
-  return join(homedir(), '.autoskill');
+  return join(homedir(), '.skillbot');
 }
 
 export function getDbPath(): string {

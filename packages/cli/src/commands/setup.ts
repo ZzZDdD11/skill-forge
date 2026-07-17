@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { getDb, closeDb } from 'autoskill-core';
+import { getDb, closeDb } from 'skillbot-core';
 import { homedir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { existsSync, mkdirSync, writeFileSync, readFileSync, cpSync, chmodSync } from 'node:fs';
@@ -38,12 +38,12 @@ export const setupCommand = new Command('setup')
       steps.push('2. ~/.claude/hooks/ already exists');
     }
 
-    // Step 3: Copy hook scripts from the autoskill package
+    // Step 3: Copy hook scripts from the skillbot package
     const projectRoot = join(__dirname, '..', '..', '..', '..', '..');
     const hooksSourceDir = join(projectRoot, 'hooks');
     const hookFiles = [
-      { src: join(hooksSourceDir, 'session-end.sh'), dest: join(hooksDir, 'autoskill-session-end.sh') },
-      { src: join(hooksSourceDir, 'session-start.md'), dest: join(hooksDir, 'autoskill-session-start.md') },
+      { src: join(hooksSourceDir, 'session-end.sh'), dest: join(hooksDir, 'skillbot-session-end.sh') },
+      { src: join(hooksSourceDir, 'session-start.md'), dest: join(hooksDir, 'skillbot-session-start.md') },
     ];
 
     for (const { src, dest } of hookFiles) {
@@ -60,8 +60,8 @@ export const setupCommand = new Command('setup')
     const mcpJsonPath = join(getClaudeDir(), '.mcp.json');
     const mcpConfig = {
       mcpServers: {
-        autoskill: {
-          command: 'autoskill-mcp',
+        skillbot: {
+          command: 'skillbot-mcp',
           args: [],
         },
       },
@@ -78,7 +78,7 @@ export const setupCommand = new Command('setup')
       if (!dryRun) {
         const existing = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
         if (!existing.mcpServers) existing.mcpServers = {};
-        existing.mcpServers.autoskill = mcpConfig.mcpServers.autoskill;
+        existing.mcpServers.skillbot = mcpConfig.mcpServers.skillbot;
         writeFileSync(mcpJsonPath, JSON.stringify(existing, null, 2) + '\n');
       }
     }
@@ -90,7 +90,7 @@ export const setupCommand = new Command('setup')
       hooks: [
         {
           type: 'command',
-          command: `bash ${join(hooksDir, 'autoskill-session-end.sh')}`,
+          command: `bash ${join(hooksDir, 'skillbot-session-end.sh')}`,
         },
       ],
     };
@@ -110,11 +110,11 @@ export const setupCommand = new Command('setup')
         if (!existing.hooks.SessionEnd) {
           existing.hooks.SessionEnd = [];
         }
-        // Check if autoskill hook already exists
+        // Check if skillbot hook already exists
         const alreadyExists = existing.hooks.SessionEnd.some(
           (entry: any) => {
             const h = entry.hooks?.[0];
-            return h?.command?.includes('autoskill-session-end');
+            return h?.command?.includes('skillbot-session-end');
           }
         );
         if (!alreadyExists) {
@@ -134,7 +134,7 @@ export const setupCommand = new Command('setup')
 
     console.log('\n✅ Setup complete!');
     console.log('   Restart Claude Code for changes to take effect.');
-    console.log('   Run "autoskill stats" to verify.\n');
+    console.log('   Run "skillbot stats" to verify.\n');
 
     if (!dryRun) {
       // Verify
@@ -144,7 +144,7 @@ export const setupCommand = new Command('setup')
       ).get() as { total_events: number };
       closeDb();
 
-      console.log(`   Database: ~/.autoskill/logs.db (${total_events} events recorded)`);
+      console.log(`   Database: ~/.skillbot/logs.db (${total_events} events recorded)`);
       console.log(`   Next session: hooks will auto-run analyze + evaluate`);
     }
   });

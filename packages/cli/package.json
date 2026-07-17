@@ -1,17 +1,17 @@
 {
-  "name": "autoskill",
+  "name": "skillbot",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "autoskill": "./bin/autoskill"
+    "skillbot": "./bin/skillbot"
   },
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
   },
   "dependencies": {
-    "autoskill-core": "*",
+    "skillbot-core": "*",
     "commander": "^12.0.0"
   }
 }

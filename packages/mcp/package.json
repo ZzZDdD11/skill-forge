@@ -1,10 +1,10 @@
 {
-  "name": "autoskill-mcp",
+  "name": "skillbot-mcp",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "autoskill-mcp": "./bin/autoskill-mcp"
+    "skillbot-mcp": "./bin/skillbot-mcp"
   },
   "scripts": {
     "build": "tsc",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "autoskill-core": "*",
+    "skillbot-core": "*",
     "zod": "^4.4.3"
   }
 }

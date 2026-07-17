@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import Database from 'better-sqlite3';
-import { getMemoryDb, insertEvent, upsertSuggestion, getPendingSuggestions } from 'autoskill-core';
-import type { Suggestion } from 'autoskill-core';
+import { getMemoryDb, insertEvent, upsertSuggestion, getPendingSuggestions } from 'skillbot-core';
+import type { Suggestion } from 'skillbot-core';
 
 describe('MCP Tools (unit)', () => {
   let db: Database.Database;

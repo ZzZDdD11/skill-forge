@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { getMemoryDb, getPendingSuggestions } from 'autoskill-core';
+import { getMemoryDb, getPendingSuggestions } from 'skillbot-core';
 import Database from 'better-sqlite3';
 
 describe('CLI commands (unit)', () => {

@@ -2,10 +2,10 @@ import { Command } from 'commander';
 import {
   getDb, closeDb,
   getActiveSkills, insertRoiRecord, updateSkillStatus,
-} from 'autoskill-core';
-import { calculateRoi } from 'autoskill-core';
-import type { SessionMetrics } from 'autoskill-core';
-import type { Skill, RoiRecord } from 'autoskill-core';
+} from 'skillbot-core';
+import { calculateRoi } from 'skillbot-core';
+import type { SessionMetrics } from 'skillbot-core';
+import type { Skill, RoiRecord } from 'skillbot-core';
 
 export const evaluateCommand = new Command('evaluate')
   .description('Evaluate ROI of skills')

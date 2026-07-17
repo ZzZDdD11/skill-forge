@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { getDb, closeDb, getPendingSuggestions, getActiveSkills, getAllPatterns } from 'autoskill-core';
+import { getDb, closeDb, getPendingSuggestions, getActiveSkills, getAllPatterns } from 'skillbot-core';
 
 export const listCommand = new Command('list')
   .description('List patterns, suggestions, and skills')
