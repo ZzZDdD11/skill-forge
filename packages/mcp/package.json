@@ -1,6 +1,6 @@
 {
   "name": "skillbot-mcp",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
@@ -15,5 +15,9 @@
     "@modelcontextprotocol/sdk": "^1.0.0",
     "skillbot-core": "*",
     "zod": "^4.4.3"
-  }
+  },
+  "files": [
+    "dist/",
+    "bin/"
+  ]
 }
