@@ -1,33 +1,75 @@
 # SkillForge
 
-Self-evolving skill creation system for AI coding agents.
+**Self-evolving skill creation system for AI coding agents.**
 
 SkillForge tracks your agent interactions, detects repeated behavior patterns, suggests creating skills, and evaluates their ROI with real data — not gut feeling.
-
-## How It Works
 
 ```
 Observe → Detect patterns → Suggest skills → Evaluate ROI → Evolve or retire
 ```
 
-1. **Record**: PostToolUse hooks log every tool call to SQLite
-2. **Analyze**: PrefixSpan algorithm mines frequent tool-call sequences across sessions
-3. **Suggest**: When a pattern repeats enough, SkillForge suggests creating a skill
-4. **Evaluate**: 4-dimensional ROI scoring (tokens, turns, tool calls, errors)
-5. **Auto-deprecate**: Skills with negative ROI are automatically deprecated
-
-## Installation
+## Quick Start
 
 ```bash
-npm install -g skillforge   # or: git clone + npm install + npm link -w packages/cli -w packages/mcp
-skillforge setup             # init DB, configure MCP, install hooks
+git clone https://github.com/ZzZDdD11/skill-forge.git
+cd skill-forge
+npm install          # postinstall auto-builds
+npm link -w packages/cli -w packages/mcp
+skillforge setup      # init DB, configure MCP, install hooks
 ```
 
-Done. Restart Claude Code.
+Restart Claude Code. That's it.
 
-### Manual configuration (if setup doesn't work)
+## How It Works
 
-Add to `~/.claude/.mcp.json`:
+1. **Record**: SkillForge CLI logs tool calls to SQLite (`skillforge record`)
+2. **Analyze**: PrefixSpan algorithm mines frequent tool-call sequences across sessions (`skillforge analyze`)
+3. **Evaluate**: 4-dimensional ROI scoring — tokens saved, turns reduced, tool calls eliminated, errors dropped (`skillforge evaluate`)
+4. **Auto-deprecate**: Skills with negative ROI are automatically marked for removal
+
+### The Closed Loop
+
+```
+SessionEnd Hook  →  skillforge analyze   →  detects repeat patterns
+                  →  skillforge evaluate  →  scores active skills
+                       ↓
+SessionStart      →  Agent sees pending suggestions (via MCP tools)
+                       ↓
+Agent calls       →  get_suggestions  →  "3 patterns detected, want to create a skill?"
+Agent calls       →  apply_skill      →  generates SKILL.md
+                       ↓
+Next sessions     →  skill uses the new SKILL.md
+SessionEnd Hook   →  skillforge evaluate  →  ROI scoring kicks in
+                       ↓
+ROI < 10          →  auto-deprecate   →  Agent warned on next session
+```
+
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `skillforge setup` | One-command setup: DB + MCP config + hooks |
+| `skillforge init` | Initialize `~/.skillforge/logs.db` only |
+| `skillforge analyze --since 7d` | Detect repeated tool call patterns |
+| `skillforge evaluate <name>` | Run ROI scoring for a specific skill |
+| `skillforge evaluate --all` | Evaluate all active skills |
+| `skillforge list` | Show patterns, suggestions, and skills |
+| `skillforge stats` | Dashboard: events, patterns, skills, ROI summary |
+| `skillforge record` | Record a tool call event (used by hooks) |
+
+## MCP Tools (Agent-callable)
+
+| Tool | Description |
+|------|-------------|
+| `get_suggestions` | View pending skill suggestions |
+| `get_skill_roi <name>` | Check a skill's ROI with real numbers |
+| `apply_skill <id>` | Create a SKILL.md from a suggestion |
+
+## Configuration (what `skillforge setup` does)
+
+Creates and configures these files:
+
+**`~/.claude/.mcp.json`** — Registers the MCP server:
 ```json
 {
   "mcpServers": {
@@ -39,53 +81,63 @@ Add to `~/.claude/.mcp.json`:
 }
 ```
 
-Add to `~/.claude/settings.json`:
+**`~/.claude/settings.json`** — Adds SessionEnd hook:
 ```json
 {
   "hooks": {
     "SessionEnd": [{
       "matcher": "",
-      "hooks": [{ "type": "command", "command": "skillforge analyze --since 1d --min-frequency 3 --min-sessions 2 && skillforge evaluate --all" }]
+      "hooks": [{
+        "type": "command",
+        "command": "skillforge analyze --since 1d --min-frequency 3 --min-sessions 2 && skillforge evaluate --all"
+      }]
     }]
   }
 }
 ```
 
-## CLI Commands
+## ROI Scoring Model
 
-| Command | Description |
-|---------|-------------|
-| `skillforge setup` | One-command setup (DB + MCP + hooks) |
-| `skillforge init` | Initialize database only |
-| `skillforge analyze` | Detect repeated patterns |
-| `skillforge evaluate` | Evaluate skill ROI |
-| `skillforge list` | List patterns, suggestions, skills |
-| `skillforge stats` | Show dashboard |
-| `skillforge record` | Record a tool call (used by hooks) |
+SkillForge evaluates skills across 4 dimensions with a weighted composite score (0–100):
 
-## Architecture
+| Dimension | Weight | What it measures |
+|-----------|--------|------------------|
+| Token efficiency | 35% | Reduction in token consumption |
+| Interaction turns | 25% | Fewer back-and-forth rounds |
+| Tool call count | 20% | Fewer tool invocations |
+| Error rate | 20% | Reduction in failed tool calls |
+
+| Score | Verdict |
+|-------|---------|
+| ≥ 30 | 🟢 Positive — saving money and time |
+| 10–29 | 🟡 Neutral — minor improvement |
+| < 10 | 🔴 Negative — auto-deprecated |
+
+Evaluation requires ≥ 3 sessions after skill creation to be statistically meaningful.
+
+## Project Structure
 
 ```
-PostToolUse Hook → skillforge record → SQLite raw_events
-SessionEnd Hook  → skillforge analyze → patterns + suggestions
-SessionStart Hook → get_suggestions (via MCP) → Agent sees suggestions
-Agent calls apply_skill → SKILL.md generated
-SessionEnd Hook → skillforge evaluate → ROI records
-Negative ROI → auto-deprecate
+packages/
+├── core/         ← Types, SQLite schema, PrefixSpan algorithm, ROI engine
+├── mcp/          ← MCP Server (get_suggestions, get_skill_roi, apply_skill)
+└── cli/          ← CLI commands (setup, analyze, evaluate, list, stats)
+hooks/            ← Shell scripts for Claude Code hooks
+test/e2e/         ← End-to-end pipeline test
 ```
 
 ## MVP Scope
 
-- [x] Tool call recording via PostToolUse hook
-- [x] PrefixSpan pattern detection
-- [x] 4-dimensional ROI scoring
-- [x] Auto-deprecation of negative-ROI skills
-- [x] MCP query tools (get_suggestions, get_skill_roi, apply_skill)
-- [x] Claude Code integration
+- [x] Tool call recording
+- [x] PrefixSpan frequent subsequence mining
+- [x] 4-dimensional ROI scoring with auto-deprecation
+- [x] MCP query tools
+- [x] Claude Code integration (MCP + SessionEnd hook)
+- [x] One-command setup
 
-### Deferred to v2
+### v2 Roadmap
 
-- Semantic similarity (embedding clustering)
+- Semantic similarity (embedding clustering for pattern detection)
 - Multi-platform support (Codex, Cursor, Gemini CLI)
-- Skill evolution engine
+- Skill self-evolution engine
 - Web dashboard
