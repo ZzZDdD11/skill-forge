@@ -1,17 +1,17 @@
 {
-  "name": "skillforge",
+  "name": "autoskill",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "skillforge": "./bin/skillforge"
+    "autoskill": "./bin/autoskill"
   },
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
   },
   "dependencies": {
-    "@skillforge/core": "*",
+    "autoskill-core": "*",
     "commander": "^12.0.0"
   }
 }

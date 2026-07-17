@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { getDb, closeDb, insertEvent, hashInput } from '@skillforge/core';
+import { getDb, closeDb, insertEvent, hashInput } from 'autoskill-core';
 import { randomUUID } from 'node:crypto';
 
 /**
@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
  * Used by PostToolUse hook.
  *
  * Usage:
- *   skillforge record --session-id <id> --tool-name Bash --tool-input '{"command":"npm test"}'
+ *   autoskill record --session-id <id> --tool-name Bash --tool-input '{"command":"npm test"}'
  */
 export const recordCommand = new Command('record')
   .description('Record a tool call event (used by hooks)')

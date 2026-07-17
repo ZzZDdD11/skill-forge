@@ -1,10 +1,10 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { getDb } from '@skillforge/core';
+import { getDb } from 'autoskill-core';
 import { registerTools } from './tools.js';
 
 const server = new McpServer({
-  name: 'skillforge-mcp',
+  name: 'autoskill-mcp',
   version: '0.1.0',
 }, {
   capabilities: {

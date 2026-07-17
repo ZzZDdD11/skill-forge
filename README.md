@@ -15,23 +15,23 @@ git clone https://github.com/ZzZDdD11/skill-forge.git
 cd skill-forge
 npm install          # postinstall auto-builds
 npm link -w packages/cli -w packages/mcp
-skillforge setup      # init DB, configure MCP, install hooks
+autoskill setup      # init DB, configure MCP, install hooks
 ```
 
 Restart Claude Code. That's it.
 
 ## How It Works
 
-1. **Record**: SkillForge CLI logs tool calls to SQLite (`skillforge record`)
-2. **Analyze**: PrefixSpan algorithm mines frequent tool-call sequences across sessions (`skillforge analyze`)
-3. **Evaluate**: 4-dimensional ROI scoring — tokens saved, turns reduced, tool calls eliminated, errors dropped (`skillforge evaluate`)
+1. **Record**: SkillForge CLI logs tool calls to SQLite (`autoskill record`)
+2. **Analyze**: PrefixSpan algorithm mines frequent tool-call sequences across sessions (`autoskill analyze`)
+3. **Evaluate**: 4-dimensional ROI scoring — tokens saved, turns reduced, tool calls eliminated, errors dropped (`autoskill evaluate`)
 4. **Auto-deprecate**: Skills with negative ROI are automatically marked for removal
 
 ### The Closed Loop
 
 ```
-SessionEnd Hook  →  skillforge analyze   →  detects repeat patterns
-                  →  skillforge evaluate  →  scores active skills
+SessionEnd Hook  →  autoskill analyze   →  detects repeat patterns
+                  →  autoskill evaluate  →  scores active skills
                        ↓
 SessionStart      →  Agent sees pending suggestions (via MCP tools)
                        ↓
@@ -39,7 +39,7 @@ Agent calls       →  get_suggestions  →  "3 patterns detected, want to creat
 Agent calls       →  apply_skill      →  generates SKILL.md
                        ↓
 Next sessions     →  skill uses the new SKILL.md
-SessionEnd Hook   →  skillforge evaluate  →  ROI scoring kicks in
+SessionEnd Hook   →  autoskill evaluate  →  ROI scoring kicks in
                        ↓
 ROI < 10          →  auto-deprecate   →  Agent warned on next session
 ```
@@ -48,14 +48,14 @@ ROI < 10          →  auto-deprecate   →  Agent warned on next session
 
 | Command | Description |
 |---------|-------------|
-| `skillforge setup` | One-command setup: DB + MCP config + hooks |
-| `skillforge init` | Initialize `~/.skillforge/logs.db` only |
-| `skillforge analyze --since 7d` | Detect repeated tool call patterns |
-| `skillforge evaluate <name>` | Run ROI scoring for a specific skill |
-| `skillforge evaluate --all` | Evaluate all active skills |
-| `skillforge list` | Show patterns, suggestions, and skills |
-| `skillforge stats` | Dashboard: events, patterns, skills, ROI summary |
-| `skillforge record` | Record a tool call event (used by hooks) |
+| `autoskill setup` | One-command setup: DB + MCP config + hooks |
+| `autoskill init` | Initialize `~/.autoskill/logs.db` only |
+| `autoskill analyze --since 7d` | Detect repeated tool call patterns |
+| `autoskill evaluate <name>` | Run ROI scoring for a specific skill |
+| `autoskill evaluate --all` | Evaluate all active skills |
+| `autoskill list` | Show patterns, suggestions, and skills |
+| `autoskill stats` | Dashboard: events, patterns, skills, ROI summary |
+| `autoskill record` | Record a tool call event (used by hooks) |
 
 ## MCP Tools (Agent-callable)
 
@@ -65,7 +65,7 @@ ROI < 10          →  auto-deprecate   →  Agent warned on next session
 | `get_skill_roi <name>` | Check a skill's ROI with real numbers |
 | `apply_skill <id>` | Create a SKILL.md from a suggestion |
 
-## Configuration (what `skillforge setup` does)
+## Configuration (what `autoskill setup` does)
 
 Creates and configures these files:
 
@@ -73,8 +73,8 @@ Creates and configures these files:
 ```json
 {
   "mcpServers": {
-    "skillforge": {
-      "command": "skillforge-mcp",
+    "autoskill": {
+      "command": "autoskill-mcp",
       "args": []
     }
   }
@@ -89,7 +89,7 @@ Creates and configures these files:
       "matcher": "",
       "hooks": [{
         "type": "command",
-        "command": "skillforge analyze --since 1d --min-frequency 3 --min-sessions 2 && skillforge evaluate --all"
+        "command": "autoskill analyze --since 1d --min-frequency 3 --min-sessions 2 && autoskill evaluate --all"
       }]
     }]
   }

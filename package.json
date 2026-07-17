@@ -1,5 +1,5 @@
 {
-  "name": "skillforge-monorepo",
+  "name": "autoskill-monorepo",
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {

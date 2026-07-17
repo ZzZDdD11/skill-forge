@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { getDb, closeDb } from '@skillforge/core';
+import { getDb, closeDb } from 'autoskill-core';
 
 export const initCommand = new Command('init')
-  .description('Initialize ~/.skillforge/logs.db')
+  .description('Initialize ~/.autoskill/logs.db')
   .action(() => {
     const db = getDb();
     const tables = db.prepare(
@@ -11,6 +11,6 @@ export const initCommand = new Command('init')
     closeDb();
 
     console.log('✅ SkillForge initialized!');
-    console.log(`   Database: ~/.skillforge/logs.db`);
+    console.log(`   Database: ~/.autoskill/logs.db`);
     console.log(`   Tables: ${tables.map(t => t.name).join(', ')}`);
   });

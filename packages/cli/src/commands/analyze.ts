@@ -3,11 +3,11 @@ import {
   getDb, closeDb,
   getAllSessions, getEventsBySession,
   upsertPattern, upsertSuggestion, getPendingSuggestions,
-} from '@skillforge/core';
-import { normalizeSequence, computePatternHash } from '@skillforge/core';
-import { mineFrequentSequences } from '@skillforge/core';
-import type { FrequentPattern } from '@skillforge/core';
-import type { Pattern, Suggestion, NormalizedCall } from '@skillforge/core';
+} from 'autoskill-core';
+import { normalizeSequence, computePatternHash } from 'autoskill-core';
+import { mineFrequentSequences } from 'autoskill-core';
+import type { FrequentPattern } from 'autoskill-core';
+import type { Pattern, Suggestion, NormalizedCall } from 'autoskill-core';
 
 export const analyzeCommand = new Command('analyze')
   .description('Detect repeated tool call patterns across sessions')

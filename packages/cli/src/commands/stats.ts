@@ -1,6 +1,6 @@
 import { Command } from 'commander';
-import { getDb, closeDb, getActiveSkills } from '@skillforge/core';
-import type { RoiRecord } from '@skillforge/core';
+import { getDb, closeDb, getActiveSkills } from 'autoskill-core';
+import type { RoiRecord } from 'autoskill-core';
 
 export const statsCommand = new Command('stats')
   .description('Show dashboard of overall statistics')

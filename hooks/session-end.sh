@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # hooks/session-end.sh
-# Trigger skillforge analyze after each Claude Code session ends.
+# Trigger autoskill analyze after each Claude Code session ends.
 # Write tool call events first via the recorder, then run analyze.
 
-SKILLFORGE_BIN="${SKILLFORGE_BIN:-skillforge}"
+SKILLFORGE_BIN="${SKILLFORGE_BIN:-autoskill}"
 
 if ! command -v "$SKILLFORGE_BIN" &> /dev/null; then
   exit 0

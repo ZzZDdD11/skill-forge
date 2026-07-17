@@ -2,10 +2,10 @@ import { Command } from 'commander';
 import {
   getDb, closeDb,
   getActiveSkills, insertRoiRecord, updateSkillStatus,
-} from '@skillforge/core';
-import { calculateRoi } from '@skillforge/core';
-import type { SessionMetrics } from '@skillforge/core';
-import type { Skill, RoiRecord } from '@skillforge/core';
+} from 'autoskill-core';
+import { calculateRoi } from 'autoskill-core';
+import type { SessionMetrics } from 'autoskill-core';
+import type { Skill, RoiRecord } from 'autoskill-core';
 
 export const evaluateCommand = new Command('evaluate')
   .description('Evaluate ROI of skills')

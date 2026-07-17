@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
-import { insertEvent, hashInput } from '@skillforge/core';
-import { RawEvent } from '@skillforge/core';
+import { insertEvent, hashInput } from 'autoskill-core';
+import { RawEvent } from 'autoskill-core';
 import { randomUUID } from 'node:crypto';
 
 export function recordToolCall(

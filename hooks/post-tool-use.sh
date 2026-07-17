@@ -11,6 +11,6 @@ SESSION_ID="${CLAUDE_SESSION_ID:-unknown}"
 TOOL_NAME="${1:-unknown}"
 TOOL_INPUT="${2:-{}}"
 
-if command -v skillforge &> /dev/null; then
-  skillforge record --session-id "$SESSION_ID" --tool-name "$TOOL_NAME" --tool-input "$TOOL_INPUT" &
+if command -v autoskill &> /dev/null; then
+  autoskill record --session-id "$SESSION_ID" --tool-name "$TOOL_NAME" --tool-input "$TOOL_INPUT" &
 fi

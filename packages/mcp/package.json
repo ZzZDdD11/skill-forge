@@ -1,10 +1,10 @@
 {
-  "name": "@skillforge/mcp",
+  "name": "autoskill-mcp",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "skillforge-mcp": "./bin/skillforge-mcp"
+    "autoskill-mcp": "./bin/autoskill-mcp"
   },
   "scripts": {
     "build": "tsc",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@skillforge/core": "*",
+    "autoskill-core": "*",
     "zod": "^4.4.3"
   }
 }

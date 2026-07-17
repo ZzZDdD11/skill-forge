@@ -10,7 +10,7 @@ import { recordCommand } from './commands/record.js';
 const program = new Command();
 
 program
-  .name('skillforge')
+  .name('autoskill')
   .description('Self-evolving skill creation system')
   .version('0.1.0');
 
