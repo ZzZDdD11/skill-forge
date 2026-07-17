@@ -39,7 +39,7 @@ export const statsCommand = new Command('stats')
 
     console.log(`
 ╔═══════════════════════════════════╗
-║       SkillForge Dashboard        ║
+║       SkillBot Dashboard        ║
 ╠═══════════════════════════════════╣
 ║ Total events recorded:  ${String(total_events).padStart(8)}  ║
 ║ Total sessions:         ${String(total_sessions).padStart(8)}  ║
